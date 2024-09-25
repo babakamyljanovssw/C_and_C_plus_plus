@@ -1,5 +1,5 @@
 # Exclude the .vscode folder
 .vscode/
 
-# Exclude all .exe files
-*.exe
+# Exclude executables folder
+*executables/
