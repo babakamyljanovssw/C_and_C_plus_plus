@@ -1,17 +1,18 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct Queue;
-int IsEmpty(struct Queue* Q);
-int IsFull(struct Queue* Q);
-struct Queue* CreateQueue(int MaxElements);
-void DisposeQueue (struct Queue* Q);
-void MakeEmpty(struct Queue* Q);
-void Enqueue (int X, struct Queue* Q);
-int Front(struct Queue* Q);
-void Dequeue(struct Queue* Q);
-int FrontAndDequeue(struct Queue* Q);
-void PrintQueue(struct Queue* Q);
+int isEmpty(struct Queue *Q);
+int isFull(struct Queue *Q);
+struct Queue *createQueue(int MaxElements);
+void disposeQueue(struct Queue *Q);
+void makeEmpty(struct Queue *Q);
+void enqueue(int X, struct Queue *Q);
+int front(struct Queue *Q);
+int rear(struct Queue *Q);
+void dequeue(struct Queue *Q);
+int frontAndDequeue(struct Queue *Q);
+void printQueue(struct Queue *Q);
 
 #define MinQueueSize 5
 
@@ -23,70 +24,107 @@ struct Queue
     int size;
     int *Array;
 };
-int IsEmpty(struct Queue* Q)
+
+int isEmpty(struct Queue *Q)
 {
     return Q->size == 0;
 }
-int IsFull(struct Queue* Q)
+
+int isFull(struct Queue *Q)
 {
     return Q->capacity == Q->size;
 }
-struct Queue* CreateQueue(int MaxElements)
+
+struct Queue *createQueue(int MaxElements)
 {
-    struct Queue* Q;
+    printf("create queue\n");
+    struct Queue *Q;
 
-    if (MaxElements < MinQueueSize) printf("Queue size is to small!\n");
-    else Q = malloc(sizeof(struct Queue));
+    if (MaxElements < MinQueueSize)
+        printf("Queue size is to small!\n");
+    else
+        Q = malloc(sizeof(struct Queue));
 
-    if(Q == NULL) printf("Out of space!\n");
-    else Q->Array = malloc(sizeof(int)*MaxElements);
+    if (Q == NULL)
+        printf("Out of space!\n");
+    else
+        Q->Array = malloc(sizeof(int) * MaxElements);
 
-    if(Q->Array == NULL) printf("Out of space!\n");
-    else Q->capacity = MaxElements;
-    MakeEmpty(Q);
+    if (Q->Array == NULL)
+        printf("Out of space!\n");
+    else
+        Q->capacity = MaxElements;
+    makeEmpty(Q);
     return Q;
 }
-void MakeEmpty(struct Queue* Q)
+
+void makeEmpty(struct Queue *Q)
 {
+    printf("make queue empty\n");
     Q->size = 0;
     Q->front = 1;
     Q->rear = 0;
 }
-void DisposeQueue(struct Queue* Q)
+
+void disposeQueue(struct Queue *Q)
 {
+    printf("dispose queue\n");
     if (Q != NULL)
     {
         free(Q->Array);
         free(Q);
     }
 }
-void Enqueue(int X, struct Queue* Q)
+
+void enqueue(int X, struct Queue *Q)
 {
-    if(IsFull(Q)) printf("Error: Full Queue!\n");
+    printf("enqueue %d to queue\n", X);
+    if (isFull(Q))
+        printf("Error: Full Queue!\n");
     else
     {
         Q->size++;
-        Q->Array[++Q->rear] = X;   
+        Q->Array[++Q->rear] = X;
     }
 }
-int Front(struct Queue* Q)
+
+int front(struct Queue *Q)
 {
-    if(IsEmpty(Q)) printf("Empty Queue!\n");
-    else return Q->Array[Q->front];
+    printf("front of queue\n");
+    if (isEmpty(Q))
+        printf("Empty Queue!\n");
+    else
+        return Q->Array[Q->front];
 }
-void Dequeue(struct Queue* Q)
+
+int rear(struct Queue *Q)
 {
-    if(IsEmpty(Q)) printf("Empty Queue!\n");
+    printf("rear of queue\n");
+    if (isEmpty(Q))
+        printf("Empty Queue!\n");
+    else
+        return Q->Array[Q->rear];
+}
+
+void dequeue(struct Queue *Q)
+{
+    printf("dequeue from queue\n");
+    if (isEmpty(Q))
+        printf("Empty Queue!\n");
     else
     {
         Q->size--;
         Q->front++;
     }
 }
-int FrontAndDequeue(struct Queue* Q)
+
+// return front and then dequeue also
+int frontAndDequeue(struct Queue *Q)
 {
+    printf("get front and dequeue from queue: ");
     int n = Q->Array[Q->front];
-    if(IsEmpty(Q)) printf("Empty Queue!\n");
+    if (isEmpty(Q))
+        printf("Empty Queue!\n");
     else
     {
         Q->size--;
@@ -94,45 +132,43 @@ int FrontAndDequeue(struct Queue* Q)
         return n;
     }
 }
-void PrintQueue(struct Queue* Q)
+
+void printQueue(struct Queue *Q)
 {
+    printf("queue is: ");
     for (int i = Q->front; i <= Q->rear; i++)
     {
-        printf("%d ",Q->Array[i]);
+        printf("%d ", Q->Array[i]);
     }
     printf("\n");
 }
+
 int main()
 {
     int MaxElements = 10;
-    //printf("Enter number elements of Array = ");
-    //scanf("%d",&MaxElements);
-    struct Queue* Q;
-    Q = CreateQueue(MaxElements);
+    struct Queue *Q;
+    Q = createQueue(MaxElements);
 
-    Enqueue(5,Q);
-    printf("Queue: ");
-    PrintQueue(Q);
+    enqueue(5, Q);
+    printQueue(Q);
 
-    Enqueue(8,Q);
-    printf("Queue: ");
-    PrintQueue(Q);
+    enqueue(8, Q);
+    printQueue(Q);
 
-    Enqueue(15,Q);
-    printf("Queue: ");
-    PrintQueue(Q);
+    enqueue(15, Q);
+    printQueue(Q);
 
-    Enqueue(3,Q);
-    printf("Queue: ");
-    PrintQueue(Q);
+    enqueue(3, Q);
+    printQueue(Q);
 
-    printf("Front = %d\n",Front(Q));
-    
-    Dequeue(Q);
-    printf("Queue: ");
-    PrintQueue(Q);
+    printf("%d\n", front(Q));
+    printf("%d\n", rear(Q));
 
-    printf("Front and Dequeue = %d\n",FrontAndDequeue(Q));
-    
+    dequeue(Q);
+    printQueue(Q);
+
+    printf("%d\n", frontAndDequeue(Q));
+    printQueue(Q);
+
     return 0;
 }

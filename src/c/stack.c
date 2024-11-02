@@ -1,73 +1,82 @@
-#include<stdio.h>
-#include<stdlib.h>
-void Push(int x);
-void Pop();
-int Top();
-int IsEmpty();
-void print();
+#include <stdio.h>
+#include <stdlib.h>
+
 struct node
 {
     int data;
-    struct node* next;
+    struct node *next;
 };
-struct node* top = NULL;
+struct node *head = NULL;
 
-void Push(int x)
+int isEmpty()
 {
-    struct node* temp =(struct node*)malloc(sizeof(struct node));
-    temp->data = x;
-    temp->next = top;
-    top = temp;
+    if (head == NULL)
+        return 1;
+    else
+        return 0;
 }
-void Pop()
+
+void push(int x)
 {
-    struct node* temp;
-    if(IsEmpty())
+    printf("push %d to stack\n", x);
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp->data = x;
+    temp->next = head;
+    head = temp;
+}
+
+void pop()
+{
+    printf("pop stack\n");
+    struct node *temp;
+    if (isEmpty())
     {
         printf("Empty stack!\n");
         return;
     }
     else
     {
-        temp = top;
-        top = top->next;
+        temp = head;
+        head = head->next;
         free(temp);
     }
 }
-int Top()
+
+int top()
 {
-    if(IsEmpty())
+    printf("top stack\n");
+    if (isEmpty())
     {
         printf("Empty stack!\n");
         return 0;
     }
-    return top->data;
+    return head->data;
 }
-int IsEmpty()
-{
-    if(top == NULL) return 1;
-    else return 0;
-}
+
 void print()
 {
-    struct node *temp = top;
-    while(temp!=NULL)
+    printf("stack is: ");
+    struct node *temp = head;
+    while (temp != NULL)
     {
         printf("%d ", temp->data);
         temp = temp->next;
     }
     printf("\n");
 }
+
 int main()
 {
-    Push(2);
-    Push(5);
-    Push(10);
+    push(2);
     print();
-    Pop();
-    Push(8);
+    push(5);
     print();
-    printf("%d\n",Top());
-    system("pause");
+    push(10);
+    print();
+    pop();
+    print();
+    push(8);
+    print();
+    printf("%d\n", top());
     return 0;
 }
